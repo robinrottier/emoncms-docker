@@ -5,57 +5,50 @@ version: '2'
 services:
   # PHP & apache container using offical Docker PHP iamge
   web:
-    # If pre-built image from docker hub exists then use that (docker pull openenergymonitor/emoncms:latest) if not build container see web/Dockerflile
-    image: openenergymonitor/emoncms:latest
     build: web/.
     volumes:
       # mount docker volumes persistant inside docker container
-      - emon-phpfina:/var/opt/emoncms/phpfina
-      - emon-phptimeseries:/var/opt/emoncms/phptimeseries
+      - emconcms_data:/var/opt/emoncms
     links:
-      - db
-      - redis
-      - mqtt
+#      - db
+#      - redis
+#      - mqtt
 
-  db:
-    image: mariadb:11.0
-    environment:
-      - "MYSQL_HOST=localhost"
-      - "MARIADB_AUTO_UPGRADE=1"
-      - "MARIADB_INITDB_SKIP_TZINFO=1"
-    volumes:
-      - emon-db-data:/var/lib/mysql
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
+#   db:
+#     image: mariadb:11.0
+#     environment:
+#       - "MYSQL_HOST=localhost"
+#       - "MARIADB_AUTO_UPGRADE=1"
+#       - "MARIADB_INITDB_SKIP_TZINFO=1"
+#     volumes:
+#       - emon-db-data:/var/lib/mysql
+#     logging:
+#       driver: json-file
+#       options:
+#         max-size: "10m"
 
-  redis:
-    image: redis:7.0
-    volumes:
-      - emon-redis-data:/data
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
+#   redis:
+#     image: redis:7.0
+#     volumes:
+#       - emon-redis-data:/data
+#     logging:
+#       driver: json-file
+#       options:
+#         max-size: "10m"
           
-  mqtt:
-    image: eclipse-mosquitto:2.0
-    build: mqtt/.
-    restart: always
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
+#   mqtt:
+#     image: eclipse-mosquitto:2.0
+#     build: mqtt/.
+#     restart: always
+#     logging:
+#       driver: json-file
+#       options:
+#         max-size: "10m"
 
 volumes:
-  emon-phpfiwa:
+  emoncms_data:
     driver: local
-  emon-phpfina:
-    driver: local
-  emon-phptimeseries:
-    driver: local
-  emon-db-data:
-    driver: local
-  emon-redis-data:
-    driver: local
+#   emon-db-data:
+#     driver: local
+#   emon-redis-data:
+#     driver: local

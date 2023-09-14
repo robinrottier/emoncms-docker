@@ -1,0 +1,2 @@
+# files folder is copied to docker image and is always unix line endings LF only
+files/* eol=lf

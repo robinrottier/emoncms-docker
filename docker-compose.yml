@@ -8,47 +8,48 @@ services:
     build: web/.
     volumes:
       # mount docker volumes persistant inside docker container
-      - emconcms_data:/var/opt/emoncms
+      - emon-web-data:/var/opt/emoncms
+
     links:
-#      - db
-#      - redis
-#      - mqtt
+     - db
+     - redis
+     - mqtt
 
-#   db:
-#     image: mariadb:11.0
-#     environment:
-#       - "MYSQL_HOST=localhost"
-#       - "MARIADB_AUTO_UPGRADE=1"
-#       - "MARIADB_INITDB_SKIP_TZINFO=1"
-#     volumes:
-#       - emon-db-data:/var/lib/mysql
-#     logging:
-#       driver: json-file
-#       options:
-#         max-size: "10m"
+  db:
+    image: mariadb:11.0
+    environment:
+      - "MYSQL_HOST=localhost"
+      - "MARIADB_AUTO_UPGRADE=1"
+      - "MARIADB_INITDB_SKIP_TZINFO=1"
+    volumes:
+      - emon-db-data:/var/lib/mysql
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
 
-#   redis:
-#     image: redis:7.0
-#     volumes:
-#       - emon-redis-data:/data
-#     logging:
-#       driver: json-file
-#       options:
-#         max-size: "10m"
+  redis:
+    image: redis:7.0
+    volumes:
+      - emon-redis-data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
           
-#   mqtt:
-#     image: eclipse-mosquitto:2.0
-#     build: mqtt/.
-#     restart: always
-#     logging:
-#       driver: json-file
-#       options:
-#         max-size: "10m"
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    build: mqtt/.
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
 
 volumes:
-  emoncms_data:
+  emon-web-data:
     driver: local
-#   emon-db-data:
-#     driver: local
-#   emon-redis-data:
-#     driver: local
+  emon-db-data:
+    driver: local
+  emon-redis-data:
+    driver: local
